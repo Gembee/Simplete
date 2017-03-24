@@ -5,24 +5,14 @@ if (!isset($_GET['q']) || $_GET['q'] == '') {
 }
 $q = $_GET['q'];
 
-$dummyTags = [
-    'Naruto',
-    'Bleach',
-    'Sakura',
-    'Uzumaki Naruto',
-    'Narakashi',
-    'Nandato',
-    'Uzumaki Naragashi',
-    'Narbuto'
-];
-
-$returnTags = [];
-
-foreach ($dummyTags as $dummyTag) {
-    if (strtolower($q) == strtolower($dummyTag)) {
-        $returnTags[] = $dummyTag;
+$tags = [];
+if ($mysqli = mysqli_connect('localhost', 'root', '', 'lessreal')) {
+    if ($result = mysqli_query($mysqli, "SELECT * FROM primary_tags WHERE label LIKE '{$q}%' LIMIT 10")) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $tags[] = $row['label'];
+        }
     }
 }
 
 header('Content-Type: application/json');
-echo json_encode($returnTags);
+echo json_encode($tags);
