@@ -92,12 +92,15 @@
 
         function findInCache(data)
         {
-            data = data.toLowerCase();
             var tags = [];
             for (var i = 0; i < cache.length; i++) {
 
                 if (cache[i].toLowerCase().match(new RegExp(data.toLowerCase() + '.*', 'i'))) {
-                    tags.push(cache[i]);
+                    var re = new RegExp(data, "ig") ;
+                    var t = cache[i].replace(re,"<span style='font-weight:bold;color:Blue;'>" +
+                        data + "</span>");
+
+                    tags.push(t);
                 }
                 if (tags.length >= settings.showResults) {
                     return tags;
